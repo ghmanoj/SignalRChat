@@ -1,21 +1,23 @@
 
 using Microsoft.AspNetCore.SignalR;
 using SignalRChat.Services;
+using SignalRChat.Models;
 
-namespace SignalRChat.Hubs;
-
-public class ChatHub : Hub
+namespace SignalRChat.Hubs
 {
-    private readonly NotificationService _notificationService;
-
-    public ChatHub(NotificationService notificationService)
+    public class ChatHub : Hub
     {
-        _notificationService = notificationService;
-    }
+        private readonly NotificationService _notificationService;
 
-    public async Task SendMessage(string user, string message)
-    {
-        await Clients.All.SendAsync("ReceiveMessage", user, message);
-    }
+        public ChatHub(NotificationService notificationService)
+        {
+            _notificationService = notificationService;
+        }
 
+        public async Task SendMessage(ChatModel model)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", model);
+        }
+
+    }
 }
